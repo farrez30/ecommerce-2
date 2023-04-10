@@ -37,6 +37,7 @@ function App() {
       </Routes>
 
       <div>THIS IS HOME PAGE</div>
+      <p>This is paragraph</p>
     </div>
   );
 }
