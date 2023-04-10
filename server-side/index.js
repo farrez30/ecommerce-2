@@ -5,8 +5,9 @@ const { db, query } = require("./database");
 const cors = require("cors");
 const { authRoutes } = require("./routes");
 const { body, validationResult } = require("express-validator");
-const multer = require("multer");
-const path = require("path");
+// const multer = require("multer");
+// const path = require("path");
+const upload = require('./middleware/multer')
 
 app.use(cors());
 
@@ -20,28 +21,29 @@ app.post(
   body("password").isLength({ min: 5 }),
   async (req, res) => {
     const errors = validationResult(req);
-    if (!error.isEmpty()) {
-      return res.status(400).json({ error: errors.array });
+    if (!errors.isEmpty()) {
+      // return res.status(400).json({ error: errors.array });
+      return res.status(200).json({ error: errors.array });
     }
   }
 );
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public");
-  },
-  filename: function (req, file, cb) {
-    cb(
-      null,
-      path.parse(file.originalname).name +
-        "-" +
-        Date.now() +
-        path.extname(file.originalname)
-    );
-  },
-});
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "public");
+//   },
+//   filename: function (req, file, cb) {
+//     cb(
+//       null,
+//       path.parse(file.originalname).name +
+//         "-" +
+//         Date.now() +
+//         path.extname(file.originalname)
+//     );
+//   },
+// });
 
-const upload = multer({ storage });
+// const upload = multer({ storage });
 
 app.post("/upload", upload.single("file"), async (req, res) => {
   try {
