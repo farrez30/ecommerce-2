@@ -27,14 +27,17 @@ function App() {
       <Routes>
         <Route path="/users" element={<Users />} />
         {
-          userGlobal.id ===''?
-          <>
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} /></>
-          
-:null
+          userGlobal.id === '' ?
+            <>
+              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<Login />} /></>
+
+            : null
         }
       </Routes>
+
+      <div>THIS IS HOME PAGE</div>
+      <p>This is paragraph</p>
     </div>
   );
 }
