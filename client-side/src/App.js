@@ -39,6 +39,9 @@ function App() {
         <Route path="/user/register" element={<Register1 />} />
         <Route path="/user/login" element={<Login1 />} />
       </Routes>
+
+      <div>THIS IS HOME PAGE</div>
+      <p>This is paragraph</p>
     </div>
   );
 }
