@@ -108,9 +108,11 @@ module.exports = {
       if (!isEmailExist[0].isActive) {
         return res
           .status(200)
-          .send({ message: "You need to activate your account", success: false });
+          .send({
+            message: "You need to activate your account",
+            success: false,
+          });
       }
-      
 
       const isValid = await bcrypt.compare(password, isEmailExist[0].password);
 
@@ -127,20 +129,19 @@ module.exports = {
 
       const token = jwt.sign(payload, "joe", { expiresIn: "1h" });
 
-      return res
-        .status(200)
-        .send({
-          message: "Login Success",
-          token,
-          data: {
-            isAdmin: isEmailExist[0].isAdmin,
-            id: isEmailExist[0].id_users,
-            name: isEmailExist[0].name,
-            email: isEmailExist[0].email,
-            username: isEmailExist[0].username,
-            imagePath: isEmailExist[0].imagePath
-          }, success: true
-        });
+      return res.status(200).send({
+        message: "Login Success",
+        token,
+        data: {
+          isAdmin: isEmailExist[0].isAdmin,
+          id: isEmailExist[0].id_users,
+          name: isEmailExist[0].name,
+          email: isEmailExist[0].email,
+          username: isEmailExist[0].username,
+          imagePath: isEmailExist[0].imagePath,
+        },
+        success: true,
+      });
     } catch (error) {
       res.status(error.status || 500).send(error);
     }
@@ -172,31 +173,33 @@ module.exports = {
       const users = await query(
         `SELECT * FROM users WHERE id_users = ${db.escape(req.user.id)}`
       );
-      return res
-        .status(200)
-        .send({
-          data: {
-            isAdmin: users[0].isAdmin,
-            id: users[0].id_users,
-            name: users[0].name,
-            email: users[0].email,
-            username: users[0].username,
-             imagePath: users[0].imagePath
-          }, 
-        });
+      return res.status(200).send({
+        data: {
+          isAdmin: users[0].isAdmin,
+          id: users[0].id_users,
+          name: users[0].name,
+          email: users[0].email,
+          username: users[0].username,
+          imagePath: users[0].imagePath,
+        },
+      });
     } catch (error) {
       res.status(error.status || 500).send(error);
     }
   },
   verification: async (req, res) => {
     try {
-        console.log('verification', req.user)
-    const id = req.user.id
-    let updateIsActiveQuery = `UPDATE users SET isActive = true WHERE id_users = ${db.escape(id)}`
-    let updateResponse = await query(updateIsActiveQuery)
-    return res.status(200).send({success: true, message: "Account is Verified"})
+      console.log("verification", req.user);
+      const id = req.user.id;
+      let updateIsActiveQuery = `UPDATE users SET isActive = true WHERE id_users = ${db.escape(
+        id
+      )}`;
+      let updateResponse = await query(updateIsActiveQuery);
+      return res
+        .status(200)
+        .send({ success: true, message: "Account is Verified" });
     } catch (error) {
-        return res.status(500).send(error)
+      return res.status(500).send(error);
     }
-  }
+  },
 };
